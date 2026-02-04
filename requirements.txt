@@ -5,3 +5,4 @@ plotly
 mlxtend
 scikit-learn
 networkx
+altair

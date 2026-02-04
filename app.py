@@ -1,4 +1,3 @@
-# app.py
 import pandas as pd
 import numpy as np
 import streamlit as st
@@ -8,7 +7,7 @@ from mlxtend.frequent_patterns import apriori, association_rules, fpgrowth
 
 # Page config
 st.set_page_config(page_title="Market Basket Analysis", layout="wide", page_icon="📊")
-st.title("📊 Market Basket Analysis Dashboard")
+st.title("📊 Business Insights Analysis Dashboard")
 st.markdown("An interactive dashboard for Market Basket & Sales Analysis")
 
 # Load and clean data
@@ -31,7 +30,7 @@ sections = ["Sales Performance", "Time-Series Analysis", "Customer Segmentation"
             "Fraud Detection", "Customer Retention"]
 choice = st.sidebar.radio("Go to", sections)
 
-# --- Section: Sales Performance ---
+# Section: Sales Performance
 if choice == "Sales Performance":
     st.header("1️⃣ Sales Performance Analysis")
     
@@ -87,7 +86,7 @@ if choice == "Sales Performance":
                      title="Revenue by Category")
     st.plotly_chart(fig_cat, use_container_width=True)
 
-# --- Section: Time-Series Analysis ---
+# Section: Time-Series Analysis
 elif choice == "Time-Series Analysis":
     st.header("2️⃣ Time-Series & Seasonal Analysis")
     
@@ -119,7 +118,7 @@ elif choice == "Customer Segmentation":
     rfm['Diversity'] = diversity
     st.dataframe(rfm.head(10))
 
-# --- Section: Basket Analysis ---
+# Section: Basket Analysis 
 elif choice == "Basket Analysis":
     st.header("4️⃣ Basket Analysis")
     top_products = df.groupby("Description")["Quantity"].sum().sort_values(ascending=False).head(500).index
@@ -134,7 +133,7 @@ elif choice == "Basket Analysis":
     st.subheader("Top 10 Rules by Lift")
     st.dataframe(rules.sort_values("lift", ascending=False).head(10))
 
-# --- Section: Country-Level Analysis ---
+# Section: Country-Level Analysis 
 elif choice == "Country-Level Analysis":
     st.header("5️⃣ Country-Level Analysis")
     country_sales = df.groupby("Country")["Revenue"].sum().sort_values(ascending=False)
@@ -147,7 +146,7 @@ elif choice == "Country-Level Analysis":
     col1.plotly_chart(fig_country_sales, use_container_width=True)
     col2.plotly_chart(fig_avg_trans, use_container_width=True)
 
-# --- Section: Price & Quantity Insights ---
+# Section: Price & Quantity Insights
 elif choice == "Price & Quantity Insights":
     st.header("6️⃣ Price & Quantity Insights")
     fig_price = px.scatter(df, x="UnitPrice", y="Quantity", log_x=True, log_y=True, title="Price vs Quantity")
@@ -156,13 +155,13 @@ elif choice == "Price & Quantity Insights":
     bulk_orders = df[(df["Quantity"] > df["Quantity"].quantile(0.99)) | (df["Revenue"] > df["Revenue"].quantile(0.99))]
     st.dataframe(bulk_orders.head(10))
 
-# --- Section: Fraud Detection ---
+# Section: Fraud Detection 
 elif choice == "Fraud Detection":
     st.header("7️⃣ Fraud / Anomaly Detection")
     fraud = df[(df["Quantity"] <= 0) | (df["UnitPrice"] <= 0)]
     st.dataframe(fraud.head(10))
 
-# --- Section: Customer Retention ---
+# Section: Customer Retention
 elif choice == "Customer Retention":
     st.header("8️⃣ Customer Retention & Churn")
     repeat_customers = df.groupby("CustomerID")["InvoiceNo"].nunique()
